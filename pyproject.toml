@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "xval"
-version = "0.0.4"
+version = "0.0.5"
 description = "Xval's Python SDK and CLI"
 authors = [
   {name = "Timothy Quast", email = "timothy.quast@xval.io"}
