@@ -8,7 +8,7 @@ from .users import (
 )
 
 from .val import (
-    list,
+    list_,
     create,
     delete,
     clone,
@@ -22,7 +22,7 @@ COMMANDS = {
     'status': status,
     'login': login,
     'logout': logout,
-    'list': list,
+    'list': list_,
     'create': create,
     'delete': delete,
     'clone': clone,
