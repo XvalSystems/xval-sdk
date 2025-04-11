@@ -2,18 +2,37 @@
 xval - Xval's Python SDK and CLI
 """
 
-__version__ = "0.0.2"
+import importlib.metadata
 
-
+__version__ = importlib.metadata.version("xval")
 
 from typing import Literal
 import xval.api as api
 
 api_endpoints = {
-    "env": {"list": "users/environment/", "create": "users/environment/"},
-    "data": {"list": "data/", "create": "data/", "delete": "data/{uuid}/"},
+    "env": {
+        "list": "/users/environment/", 
+        "create": "/users/environment/",
+        "retrieve": "/users/environment/{uuid}/"
+    },
+    "data": {
+        "list": "/data/", 
+        "create": "/data/", 
+        "delete": "/data/{uuid}/",
+        "retrieve": "/data/{uuid}/"
+    },
     "run": {
-      "list": "run/", "create": "run/", "delete": "run/{uuid}/", "clone": "run/{uuid}/clone/",
+      "list": "/run/", 
+      "create": "/run/", 
+      "delete": "/run/{uuid}/", 
+      "clone": "/run/{uuid}/clone/",
+      "retrieve": "/run/{uuid}/",
+    #   "results": "/run/{uuid}/results_detail/",
+      "audits": "/run/{uuid}/audits/",
+    },
+    "run_element": {
+        "update": "/run-element/{uuid}/",
+        "retrieve": "/run-element/{uuid}/"
     },
 }
 
@@ -22,13 +41,20 @@ def find_object(
     name: str,
 ):
     """Find an object by name."""
-    objects = list(kind)
+    objects = list_(kind)
     for obj in objects:
         if obj['name'] == name:
             return obj
     return None
 
-def list(
+def retrieve(
+    kind: Literal["env", "data", "run", "run_element"],
+    uuid: str,
+):
+    """Retrieve an object by uuid."""
+    return api.get(api_endpoints[kind]["retrieve"].format(uuid=uuid))
+
+def list_(
     kind: Literal["env", "data", "run"],
 ):
     """List objects."""
@@ -66,17 +92,41 @@ def run(
     uuid: str
 ):
 	"""Start a run."""
-	return api.post(f"run/{uuid}/start/")
+	return api.post(f"/run/{uuid}/start/")
 
 def init(
     uuid: str
 ):
     """Initialize a run."""
-    return api.post(f"run/{uuid}/init/")
+    return api.post(f"/run/{uuid}/init/")
 
 def audit(
     uuid: str
 ):
     """Audit a run_element."""
-    return api.post(f"run-element/{uuid}/audit/")
+    return api.post(f"/run-element/{uuid}/audit/")
 
+def list_audits(
+    kind: Literal["run", "run_element"],
+    uuid: str
+):
+    """Get results for a run."""
+    return api.get(api_endpoints[kind]["audits"].format(uuid=uuid))
+
+
+def switch_to_env(
+    uuid: str
+):
+    """Switch to an environment."""
+    return api.post(f"/users/environment/{uuid}/switch/")
+
+
+def update(
+    kind: Literal["run_element"], 
+    uuid: str, 
+    data: dict
+) -> None:
+    """Update an object."""
+    return api.patch(api_endpoints[kind]['update'].format(uuid=uuid), data)
+
+ 

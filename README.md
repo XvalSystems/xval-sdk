@@ -10,15 +10,17 @@ pip install xval
 
 ## Setup
 
-After installation, you need to configure your Xval environment. You can do this by setting your organization's slug:
+1. After installation, you need to configure your Xval environment. You can do this by setting your organization's slug:
 
 ```bash
-xval set --slug demo  # For demo environment
+xval set --slug demo  # For demo app
 # OR
-xval set --slug your-company-slug  # For your company's environment
+xval set --slug your-company-slug  # For your company's app
 ```
 
-Next login with `xval login`. You'll be prompted for your email and password.
+2. Next go to [Xval](https://xval.io) and create an account.
+
+3. Finally, login with `xval login`. You'll be prompted for your email and password.
 
 ## CLI Commands
 

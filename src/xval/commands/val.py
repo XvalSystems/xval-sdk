@@ -1,18 +1,19 @@
 import typer
 import questionary
-from ..api import post
+import xval.api as api
 from .. import (
     api_endpoints,
     find_object,
-    list as list_ctrl,
+    list_ as list_ctrl,
     delete as delete_ctrl,
     clone as clone_ctrl,
     run as run_ctrl,
     init as init_ctrl,
     audit as audit_ctrl,
+    update as update_ctrl,
 )
 
-def list(
+def list_(
     kind: str = typer.Argument(None, help="The kind of objects to list."),
     attr: list[str] = typer.Option([], "--attr", help="The attributes to list."),
 ):
@@ -38,7 +39,7 @@ def create(
 
     typer.echo(f"Creating {kind} object...")
     if kind == "run":
-        typer.echo(post('run/', {'name': name}))
+        typer.echo(api.post('/run/', {'name': name}))
     else:
         raise typer.Abort("Invalid kind.")
 
@@ -79,8 +80,6 @@ def clone(
 
     if kind not in api_endpoints or 'list' not in api_endpoints[kind] or 'clone' not in api_endpoints[kind]:
         raise typer.Abort("Invalid kind.")
-
-
 
     obj = find_object(kind, name)
 
@@ -126,6 +125,7 @@ def run(
 
 def audit(
     name: str|None = typer.Argument(None, help="The name of the run to audit."),
+    no_config: bool = typer.Option(False, "--no-config", help="Do not offer config options."),
 ):
     """Audit a run."""
     if name is None:
@@ -145,5 +145,43 @@ def audit(
             "Select a run element to audit.",
             choices=choices
         ).ask()
+    
+    if not no_config:
+        audit_config_prompts(choice)
 
     typer.echo(audit_ctrl(choice))
+
+def audit_config_prompts(run_element_uuid: str):
+    run_element = api.get(f'/run-element/{run_element_uuid}/')
+    keep_inputs = run_element['audit_config']['keep_inputs']
+    keep_vtables = run_element['audit_config']['keep_vtables']
+    for tbl in keep_inputs:
+        tbl['indices'] = prompt_for_list_of_indices(
+            tbl['indices'], 
+            f"Enter indices for {tbl['name']} (comma separated integers, or leave blank to keep current value: {tbl.get('indices', [])})"
+        )
+
+    for vtbl in keep_vtables:
+        vtbl['values'] = prompt_for_list_of_indices(
+            vtbl['values'], 
+            f"Enter indices for {vtbl['name']} (comma separated integers, or leave blank to keep current value: {vtbl.get('values', [])})"
+        )
+
+    update_ctrl(
+        kind = "run_element",
+        uuid = run_element_uuid,
+        data = {
+            'audit_config': {
+                'keep_inputs': keep_inputs,
+                'keep_vtables': keep_vtables
+            }
+        }
+    )
+
+
+def prompt_for_list_of_indices(value_list: list[int], prompt_text: str, ):
+    indices_input = questionary.text(prompt_text).ask()
+    if indices_input:
+        return [int(idx.strip()) for idx in indices_input.split(',') if idx.strip()]
+    else:
+        return value_list
