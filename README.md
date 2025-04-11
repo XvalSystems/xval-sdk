@@ -2,6 +2,8 @@
 
 Xval is the SDK and CLI tool for managing and interacting with [Xval](https://xval.io). This guide will help you get started with installation, setup, and using the various commands available.
 
+See the [GitHub repo](https://github.com/XvalSystems/xval-sdk).
+
 ## Installation
 
 ```bash
