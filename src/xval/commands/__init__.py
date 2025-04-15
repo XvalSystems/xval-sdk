@@ -15,6 +15,7 @@ from .val import (
     run,
     init,
     audit,
+    view,
 )
 # Dictionary mapping command names to functions
 COMMANDS = {
@@ -29,6 +30,7 @@ COMMANDS = {
     'run': run,
     'init': init,
     'audit': audit,
+    'view': view,
 }
 
 def register_commands(app):

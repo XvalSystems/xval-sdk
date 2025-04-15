@@ -15,12 +15,16 @@ markdown-it-py==3.0.0
 mdurl==0.1.2
 more-itertools==10.6.0
 nh3==0.2.21
+numpy==2.2.4
 packaging==24.2
+pandas==2.2.3
 pluggy==1.5.0
 prompt_toolkit==3.0.50
 Pygments==2.19.1
 pyproject_hooks==1.2.0
 pytest==8.3.5
+python-dateutil==2.9.0.post0
+pytz==2025.2
 pywin32-ctypes==0.2.3
 questionary==2.1.0
 readme_renderer==44.0
@@ -30,9 +34,12 @@ rfc3986==2.0.0
 rich==14.0.0
 setuptools==78.1.0
 shellingham==1.5.4
+six==1.17.0
 twine==6.1.0
 typer==0.15.2
 typing_extensions==4.13.1
+tzdata==2025.2
 urllib3==2.3.0
 wcwidth==0.2.13
 wheel==0.45.1
+-e git+ssh://git@github.com/XvalSystems/xval-sdk.git@2d34f7a215ef653788e3208f2c9b7dbcdc01be99#egg=xval

@@ -18,7 +18,11 @@ def set_(
     if api_url:
         _config.api_url = api_url
         typer.echo(f"API URL set to: {_config.get_api_url()}")
+    if env:
+        _config.switch_env(env)
+        typer.echo(f"Environment set to: {env}")
         
+
 def status():
     """Display all configuration settings."""
     typer.echo("Current configuration:")

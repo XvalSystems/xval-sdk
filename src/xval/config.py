@@ -2,6 +2,7 @@ import os
 import json
 from pathlib import Path
 import requests
+from .sdk.environment import switch_to_env
 
 class Config:
 	
@@ -44,6 +45,26 @@ class Config:
 			attr: getattr(self, attr) 
 			for attr in self.attributes
 		}
+	
+	@property
+	def current_environment(self):
+		user = self.current_user()
+		if 'current_environment' in user:
+			return user['current_environment']
+		else:
+			return None
+		
+	def switch_env(self, env_name: str) -> None:
+		"""Switch to an environment."""
+		user = self.current_user()
+		for env in user['environments']:
+			if env['name'] == env_name:
+				switch_to_env(env['uuid'])
+				return
+		
+		raise ValueError(f"Environment {env_name} not found or you don't have access to it.")
+
+
 
 	def _save_config(self):
 		"""Save current configuration to file."""

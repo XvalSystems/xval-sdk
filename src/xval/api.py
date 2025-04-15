@@ -1,6 +1,31 @@
 import requests
 from .config import config as _config
 
+endpoints = {
+	"env": {
+		"list": "/users/environment/", 
+		"create": "/users/environment/",
+		"retrieve": "/users/environment/{uuid}/"
+	},
+	"data": {
+		"list": "/data/", 
+		"create": "/data/", 
+		"delete": "/data/{uuid}/",
+		"retrieve": "/data/{uuid}/"
+	},
+	"run": {
+		"list": "/run/", 
+		"create": "/run/", 
+		"delete": "/run/{uuid}/", 
+		"clone": "/run/{uuid}/clone/",
+		"retrieve": "/run/{uuid}/",
+		"audits": "/run/{uuid}/audits/",
+	},
+	"run_element": {
+		"update": "/run-element/{uuid}/",
+		"retrieve": "/run-element/{uuid}/"
+	},
+}
 
 def post(url: str, data: dict|None = None):
 	"""Post a request to the API."""

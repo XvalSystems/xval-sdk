@@ -72,6 +72,12 @@ xval list <kind> [--attr ATTRIBUTE1 ATTRIBUTE2 ...]
 ```
 List objects of a specific kind with optional attributes to display.
 
+#### View Objects
+```bash
+xval view <kind> [--name NAME] [--uuid UUID] [--attr ATTRIBUTE1 ATTRIBUTE2 ...]
+```
+View an object of a specific kind with optional attributes to display.
+
 #### Create Objects
 ```bash
 xval create <kind> [--name NAME]

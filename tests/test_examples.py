@@ -16,7 +16,7 @@ import xval as xv
 def test_clone_run_and_start_audit():
 	run_name = "Clone Test " + ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(10))
 	clone_run_and_audit.main(run_name)
-	run = xv.find_object("run", run_name)
+	run = xv.retrieve("run", run_name)
 	audits = xv.list_audits("run", run["uuid"])
 
 	assert len(audits) > 0

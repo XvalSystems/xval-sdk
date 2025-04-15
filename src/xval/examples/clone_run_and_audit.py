@@ -14,11 +14,11 @@ def main(new_run_name:str|None = None):
 	new_run_name = "Clone" if (new_run_name is None) else new_run_name
 
 	# Switch to target Environment
-	environment = xv.find_object("env", ENVIRONMENT_NAME)
+	environment = xv.retrieve("env", ENVIRONMENT_NAME)
 	xv.switch_to_env(environment["uuid"])
 
 	# Clone and initialize run
-	original_run = xv.find_object("run", RUN_NAME)
+	original_run = xv.retrieve("run", RUN_NAME)
 	new_run = xv.clone("run", original_run["uuid"], new_run_name)
 	xv.init(new_run["uuid"])
 	
